@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose')
 const logger = require('morgan')
+const path = require('path')
 
 const moviesRouter = require('./routes/moviesRouter')
 
@@ -22,6 +23,12 @@ connection.once('open', () => {
 app.use(cors());
 app.use(express.json()); // (bodyparser)
 app.use(logger('dev'))
+
+app.use(express.static(path.join(__dirname, 'build')));
+
+app.get('/*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
 
 app.use('/movies', moviesRouter)
 
