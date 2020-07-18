@@ -1,8 +1,9 @@
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose')
+const logger = require('morgan')
 
-// routes
+const moviesRouter = require('./routes/moviesRouter')
 
 require('dotenv').config();
 
@@ -20,6 +21,9 @@ connection.once('open', () => {
 // middlewares
 app.use(cors());
 app.use(express.json()); // (bodyparser)
+app.use(logger('dev'))
+
+app.use('/movies', moviesRouter)
 
 app.listen( port, () => {
     console.log(`Server is running on port: ${port}`);
